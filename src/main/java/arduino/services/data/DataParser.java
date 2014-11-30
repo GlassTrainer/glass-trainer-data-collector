@@ -7,6 +7,10 @@ import java.util.Set;
 import arduino.models.Acceleration;
 import arduino.models.Delimiters;
 
+/**
+ * @author Serhat CAN
+ *
+ */
 public class DataParser {
 
 	private AccelerationService accService;

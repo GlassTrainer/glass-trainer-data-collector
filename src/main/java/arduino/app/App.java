@@ -3,6 +3,10 @@ package arduino.app;
 import arduino.services.main.SerialPortConnection;
 import arduino.threads.TimerThread;
 
+/**
+ * @author Serhat CAN
+ *
+ */
 public class App {
 
 	public static void main(String[] args) {

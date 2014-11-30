@@ -4,6 +4,7 @@
 package arduino.models;
 
 import java.io.Serializable;
+import java.sql.Time;
 import java.util.Date;
 import java.util.Map;
 
@@ -21,22 +22,28 @@ import javax.persistence.TemporalType;
  */
 
 @Entity
-public class Acceleration implements SensorData, Serializable {
-
-	// cx:-0.023-cy:0.056-cz:1.001
-	// cx:-0.024-cy:0.049-cz:0.998
+public class Gps implements SensorData, Serializable {
 
 	@Id
 	@GeneratedValue
 	private Long id;
 
-	private String cx;
-	private String cy;
-	private String cz;
+	/*
+	 * This is the current time coming from GPS
+	 */
+	private Time gpsTime;
+
+	@Column(length = 10)
+	private Double xCoordinate;
+
+	private Double yCoordinate;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "created", nullable = false, updatable = false)
 	private Date created;
+	
+	
+	// Getters and Setters
 
 	public Date getTime() {
 		return created;
@@ -47,48 +54,28 @@ public class Acceleration implements SensorData, Serializable {
 		created = new Date();
 	}
 
-	public Acceleration() {
-
+	public Time getGpsTime() {
+		return gpsTime;
 	}
 
-	public Acceleration(String cx, String cy, String cz) {
-		this.cx = cx;
-		this.cy = cy;
-		this.cz = cz;
+	public void setTime(Time gpsTime) {
+		this.gpsTime = gpsTime;
 	}
 
-	// Getters and Setters
-
-	public Long getId() {
-		return id;
+	public Double getxCoordinate() {
+		return xCoordinate;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setxCoordinate(Double xCoordinate) {
+		this.xCoordinate = xCoordinate;
 	}
 
-	public String getCx() {
-		return cx;
+	public Double getyCoordinate() {
+		return yCoordinate;
 	}
 
-	public void setCx(String cx) {
-		this.cx = cx;
-	}
-
-	public String getCy() {
-		return cy;
-	}
-
-	public void setCy(String cy) {
-		this.cy = cy;
-	}
-
-	public String getCz() {
-		return cz;
-	}
-
-	public void setCz(String cz) {
-		this.cz = cz;
+	public void setyCoordinate(Double yCoordinate) {
+		this.yCoordinate = yCoordinate;
 	}
 
 	@Override
