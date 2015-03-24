@@ -6,6 +6,7 @@ import java.util.Set;
 
 import arduino.models.Acceleration;
 import arduino.models.Delimiters;
+import arduino.models.Pulse;
 
 /**
  * @author Serhat CAN
@@ -15,8 +16,8 @@ public class DataParser {
 
 	private AccelerationService accService;
 
-	// cx:-0.059-cy:0.062-cz:0.994
-	// cx:-0.056-cy:0.066-cz:0.998
+	// cx:-0.059,cy:0.062,cz:0.994,p:85      pulse optional
+	// cx:-0.056,cy:0.066,cz:0.998
 	String data;
 
 	public DataParser() {
@@ -27,8 +28,8 @@ public class DataParser {
 		this.data = data;
 	}
 
-	private Map<String, String> parseAndSave() {
-		Map<String, String> values = new HashMap<String, String>();
+	private void parseAndSave(Map<String, String> values) {
+
 		String params[] = data.split(Delimiters.comma);
 
 		for (int i = 0; i < params.length; i++) {
@@ -39,9 +40,12 @@ public class DataParser {
 		Acceleration acc = new Acceleration(values.get("cx"), values.get("cy"),
 				values.get("cz"));
 
-		accService.save(acc);
+		Pulse pulse = null;
+		if(values.get("p") != null) {
+			pulse = new Pulse(values.get("p"));
+		}
 
-		return values;
+		accService.save(acc, pulse);
 	}
 
 	public void printRawData() {
@@ -49,7 +53,8 @@ public class DataParser {
 	}
 
 	public void parseData() {
-		HashMap<String, String> values = (HashMap<String, String>) parseAndSave();
+		Map<String, String> values = new HashMap<String, String>();
+		parseAndSave(values);
 		Set<String> keys = values.keySet();
 
 		for (String key : keys) {

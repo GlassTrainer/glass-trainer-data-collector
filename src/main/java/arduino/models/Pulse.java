@@ -11,6 +11,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -23,15 +24,33 @@ import javax.persistence.TemporalType;
 @Entity
 public class Pulse implements SensorData, Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue
 	private Long id;
 
-	private int rate;
+	@ManyToOne
+	User user;
+
+	@Column(nullable = false)
+	private String rate;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "created", nullable = false, updatable = false)
 	private Date created;
+
+	public Pulse(String rate) {
+		this.rate = rate;
+	}
+	
+	public Pulse(User user, String rate) {
+		this.user = user;
+		this.rate = rate;
+	}
 
 	// Getters and Setters
 
@@ -52,11 +71,11 @@ public class Pulse implements SensorData, Serializable {
 		this.id = id;
 	}
 
-	public int getRate() {
+	public String getRate() {
 		return rate;
 	}
 
-	public void setRate(int rate) {
+	public void setRate(String rate) {
 		this.rate = rate;
 	}
 

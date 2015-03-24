@@ -1,106 +1,101 @@
 /**
- * 
+ *
  */
 package arduino.models;
 
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.Map;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.PrePersist;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 /**
  * @author Serhat CAN
- *
  */
 
 @Entity
-public class Acceleration implements SensorData, Serializable {
+public class Acceleration implements Serializable {
 
-	// cx:-0.023-cy:0.056-cz:1.001
-	// cx:-0.024-cy:0.049-cz:0.998
+    private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue
-	private Long id;
+    // cx:-0.023-cy:0.056-cz:1.001
+    // cx:-0.024-cy:0.049-cz:0.998
 
-	private String cx;
-	private String cy;
-	private String cz;
+    @Id
+    @GeneratedValue
+    private Long id;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "created", nullable = false, updatable = false)
-	private Date created;
+    @ManyToOne
+    private User user;
 
-	public Date getTime() {
-		return created;
-	}
+    private String cx;
+    private String cy;
+    private String cz;
 
-	@PrePersist
-	protected void setTime() {
-		created = new Date();
-	}
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "created", nullable = false, updatable = false)
+    private Date created;
 
-	public Acceleration() {
 
-	}
+    // Getters and Setters
 
-	public Acceleration(String cx, String cy, String cz) {
-		this.cx = cx;
-		this.cy = cy;
-		this.cz = cz;
-	}
+    public Date getTime() {
+        return created;
+    }
 
-	// Getters and Setters
+    @PrePersist
+    protected void setTime() {
+        created = new Date();
+    }
 
-	public Long getId() {
-		return id;
-	}
+    public Acceleration() {
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    }
 
-	public String getCx() {
-		return cx;
-	}
+    public Acceleration(String cx, String cy, String cz) {
+        this.cx = cx;
+        this.cy = cy;
+        this.cz = cz;
+    }
 
-	public void setCx(String cx) {
-		this.cx = cx;
-	}
+    // Getters and Setters
 
-	public String getCy() {
-		return cy;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public void setCy(String cy) {
-		this.cy = cy;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public String getCz() {
-		return cz;
-	}
+    public String getCx() {
+        return cx;
+    }
 
-	public void setCz(String cz) {
-		this.cz = cz;
-	}
+    public void setCx(String cx) {
+        this.cx = cx;
+    }
 
-	@Override
-	public String getClassIdentifier() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    public String getCy() {
+        return cy;
+    }
 
-	@Override
-	public Map<String, String> getSensorData() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    public void setCy(String cy) {
+        this.cy = cy;
+    }
 
+    public String getCz() {
+        return cz;
+    }
+
+    public void setCz(String cz) {
+        this.cz = cz;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }

@@ -6,6 +6,7 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
 import arduino.models.Acceleration;
+import arduino.models.Pulse;
 
 public class AccelerationJPA {
 	private EntityManager manager;
@@ -18,26 +19,20 @@ public class AccelerationJPA {
 
 	}
 
-	public void save(Acceleration acc) {
+	public void save(Acceleration acc, Pulse pulse) {
 		tx = manager.getTransaction();
 		tx.begin();
 		try {
 			manager.persist(acc);
+
+			if(pulse != null) {
+				manager.persist(pulse);
+			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		tx.commit();
-
 	}
-
-	//
-	// private void listAll() {
-	// List<Acceleration> resultList = manager.createQuery(
-	// "Select a From Employee a", Acceleration.class).getResultList();
-	// System.out.println("num of employess:" + resultList.size());
-	// for (Acceleration next : resultList) {
-	// System.out.println("next employee: " + next);
-	// }
-	// }
 
 }

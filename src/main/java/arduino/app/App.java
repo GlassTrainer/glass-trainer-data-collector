@@ -1,5 +1,6 @@
 package arduino.app;
 
+import arduino.services.main.DataHandlerThread;
 import arduino.services.main.SerialPortConnection;
 import arduino.threads.TimerThread;
 
@@ -16,10 +17,10 @@ public class App {
 
 		TimerThread timerThread = new TimerThread(5);
 		timerThread.start();
-		//
-		// DataHandlerThread dataHandlerThread = new DataHandlerThread(
-		// "dataHandlerThread");
-		// dataHandlerThread.start();
+
+		DataHandlerThread dataHandlerThread = new DataHandlerThread(
+				"dataHandlerThread");
+		dataHandlerThread.start();
 
 	}
 
