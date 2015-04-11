@@ -1,15 +1,22 @@
 /**
  * @Author:Serhat CAN
  */
-package arduino.models;
+package arduino.entity;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-public class User implements Serializable {
+public class User implements Serializable, UserDetails {
 
     /**
      * Default
@@ -20,6 +27,7 @@ public class User implements Serializable {
     @GeneratedValue
     private Long id;
 
+    @Size(min = 3, max = 20, message = "Username must be between 3 and 20 characters long.")
     @Column(unique = true, nullable = false)
     private String username;
 
@@ -30,8 +38,10 @@ public class User implements Serializable {
     @Column(unique = true, length = 50)
     private String email;
 
+    @Size(min = 3, max = 20, message = "First name must be between 3 and 20 characters long.")
     private String firstname;
 
+    @Size(min = 3, max = 20, message = "Last name must be between 3 and 20 characters long.")
     private String surname;
 
     @ElementCollection(fetch = FetchType.EAGER)
@@ -47,14 +57,14 @@ public class User implements Serializable {
         this.password = passwordHash;
     }
 
-    public User(String name, String passwordHash, String email, String firstname, String surname, Role role) {
-        this.username = name;
-        this.password = passwordHash;
-        this.email = email;
-        this.firstname = firstname;
-        this.surname = surname;
-        this.addRole(role);
-    }
+	public User(String name, String passwordHash, String email, String firstname, String surname, Role role) {
+		this.username = name;
+		this.password = passwordHash;
+		this.email = email;
+		this.firstname = firstname;
+		this.surname = surname;
+		this.addRole(role);
+	}
 
 
     public Long getId() {
@@ -65,7 +75,7 @@ public class User implements Serializable {
         this.id = id;
     }
 
-
+    @Override
     public String getUsername() {
         // TODO Auto-generated method stub
         return this.username;
@@ -111,6 +121,47 @@ public class User implements Serializable {
 
     public void addRole(Role role) {
         this.roles.add(role);
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        // TODO Auto-generated method stub
+        Set<Role> roles = this.getRoles();
+
+        if (roles == null) {
+            return Collections.emptyList();
+        }
+
+        Set<GrantedAuthority> authorities = new HashSet<GrantedAuthority>();
+        for (Role role : roles) {
+            authorities.add(new SimpleGrantedAuthority(role.toString()));
+        }
+
+        return authorities;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        // TODO Auto-generated method stub
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        // TODO Auto-generated method stub
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        // TODO Auto-generated method stub
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        // TODO Auto-generated method stub
+        return true;
     }
 
     public String getEmail() {

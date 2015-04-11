@@ -1,7 +1,7 @@
 /**
  * @Author:Serhat CAN
  */
-package arduino.models;
+package arduino.entity;
 
 
 public enum Role {

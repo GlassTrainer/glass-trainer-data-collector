@@ -3,8 +3,8 @@
  */
 package arduino.services.data;
 
-import arduino.models.Acceleration;
-import arduino.models.Pulse;
+import arduino.entity.Acceleration;
+import arduino.entity.Pulse;
 import arduino.persistence.AccelerationJPA;
 
 /**

@@ -4,9 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import arduino.models.Acceleration;
-import arduino.models.Delimiters;
-import arduino.models.Pulse;
+import arduino.entity.Acceleration;
+import arduino.entity.Delimiters;
+import arduino.entity.Pulse;
 
 /**
  * @author Serhat CAN

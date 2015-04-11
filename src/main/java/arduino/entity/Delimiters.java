@@ -1,4 +1,4 @@
-package arduino.models;
+package arduino.entity;
 
 /**
  * @author Serhat CAN

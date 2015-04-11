@@ -41,7 +41,7 @@ public class SerialPortConnection implements SerialPortEventListener {
 
 		dataCarrier = new DataParser();
 
-		System.setProperty("gnu.io.rxtx.SerialPorts", "COM3");
+		System.setProperty("gnu.io.rxtx.SerialPorts", "COM4");
 
 		CommPortIdentifier portId = null;
 		Enumeration portEnum = CommPortIdentifier.getPortIdentifiers();

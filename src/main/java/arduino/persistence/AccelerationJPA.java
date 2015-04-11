@@ -5,8 +5,8 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
-import arduino.models.Acceleration;
-import arduino.models.Pulse;
+import arduino.entity.Acceleration;
+import arduino.entity.Pulse;
 
 public class AccelerationJPA {
 	private EntityManager manager;
