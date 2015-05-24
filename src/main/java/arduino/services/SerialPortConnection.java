@@ -1,4 +1,4 @@
-package arduino.services.main;
+package arduino.services;
 
 import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort;
@@ -10,7 +10,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.Enumeration;
 
-import arduino.services.data.DataParser;
+import arduino.services.DataParser;
 
 /**
  * @author Serhat CAN
@@ -37,11 +37,11 @@ public class SerialPortConnection implements SerialPortEventListener {
 	/** Default bits per second for COM port. */
 	private static final int DATA_RATE = 9600;
 
-	public void initialize() {
+	public void initialize(String trainingName) throws ComPortNotFoundException {
 
-		dataCarrier = new DataParser();
+		dataCarrier = new DataParser(trainingName);
 
-		System.setProperty("gnu.io.rxtx.SerialPorts", "COM4");
+		//System.setProperty("gnu.io.rxtx.SerialPorts", "COM4");
 
 		CommPortIdentifier portId = null;
 		Enumeration portEnum = CommPortIdentifier.getPortIdentifiers();
@@ -59,7 +59,7 @@ public class SerialPortConnection implements SerialPortEventListener {
 		}
 		if (portId == null) {
 			System.out.println("Could not find COM port.");
-			return;
+			throw new ComPortNotFoundException();
 		}
 
 		try {
@@ -92,6 +92,7 @@ public class SerialPortConnection implements SerialPortEventListener {
 		if (serialPort != null) {
 			serialPort.removeEventListener();
 			serialPort.close();
+			System.out.println("Serial port listener closed");
 		}
 	}
 
@@ -102,7 +103,6 @@ public class SerialPortConnection implements SerialPortEventListener {
 		if (oEvent.getEventType() == SerialPortEvent.DATA_AVAILABLE) {
 			try {
 				String inputLine = input.readLine();
-				// System.out.println(inputLine);
 				dataCarrier.setData(inputLine);
 				dataCarrier.parseData();
 				//dataCarrier.printRawData();
@@ -112,8 +112,8 @@ public class SerialPortConnection implements SerialPortEventListener {
 				System.err.println(e.toString());
 			}
 		}
-		// Ignore all the other eventTypes, but you should consider the other
-		// ones.
 	}
 
+	public class ComPortNotFoundException extends Throwable {
+	}
 }

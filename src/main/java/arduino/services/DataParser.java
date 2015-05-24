@@ -1,12 +1,13 @@
-package arduino.services.data;
+package arduino.services;
 
+import java.time.Instant;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import arduino.entity.Acceleration;
-import arduino.entity.Delimiters;
-import arduino.entity.Pulse;
+import arduino.entity.*;
+import arduino.persistence.DataParserPersistence;
 
 /**
  * @author Serhat CAN
@@ -14,14 +15,20 @@ import arduino.entity.Pulse;
  */
 public class DataParser {
 
-	private AccelerationService accService;
+	private DataParserPersistence persistence;
+	private Training training;
+	private User user;
 
 	// cx:-0.059,cy:0.062,cz:0.994,p:85      pulse optional
 	// cx:-0.056,cy:0.066,cz:0.998
 	String data;
 
-	public DataParser() {
-		accService = new AccelerationService();
+	public DataParser(String trainingName) {
+		persistence = new DataParserPersistence();
+		user = persistence.getUser(1l);
+		training = new Training(user, trainingName);
+		training.setStartTime(Date.from(Instant.now()));
+		training.setEndTime(Date.from(Instant.now()));
 	}
 
 	public void setData(String data) {
@@ -44,8 +51,7 @@ public class DataParser {
 		if(values.get("p") != null) {
 			pulse = new Pulse(values.get("p"));
 		}
-
-		accService.save(acc, pulse);
+		persistence.save(training, acc, pulse);
 	}
 
 	public void printRawData() {
